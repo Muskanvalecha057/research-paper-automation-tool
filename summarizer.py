@@ -1,21 +1,25 @@
 import pandas as pd
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def summarize_abstract(abstract):
     if not abstract or abstract == "":
         return "No abstract available"
     
-    url = "https://api.anthropic.com/v1/messages"
+    api_key = os.getenv("GROQ_API_KEY")
+    
+    url = "https://api.groq.com/openai/v1/chat/completions"
     
     headers = {
-        "x-api-key": "GROQ_KEY",
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json"
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
     }
     
     body = {
-        "model": "claude-haiku-4-5-20251001",
-        "max_tokens": 150,
+        "model": "llama3-8b-8192",
         "messages": [
             {
                 "role": "user",
@@ -26,7 +30,7 @@ def summarize_abstract(abstract):
     
     response = requests.post(url, headers=headers, json=body)
     result = response.json()
-    return result["content"][0]["text"]
+    return result["choices"][0]["message"]["content"]
 
 def summarize_papers():
     df = pd.read_csv("papers.csv")
