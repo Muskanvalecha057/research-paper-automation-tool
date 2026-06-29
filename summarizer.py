@@ -8,7 +8,7 @@ def summarize_abstract(abstract):
     url = "https://api.anthropic.com/v1/messages"
     
     headers = {
-        "x-api-key": "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",
+        "x-api-key": "GROQ_KEY",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json"
     }
